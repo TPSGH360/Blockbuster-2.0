@@ -1,0 +1,44 @@
+<!--user profile -->
+
+{% extends "movies/main.html" %} {% block content %}
+<div class="container mt-5">
+  <h2>Edit Your Profile</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="city" class="form-label">City</label>
+      <input
+        type="text"
+        id="city"
+        name="city"
+        class="form-control"
+        value="{{ profile.city }}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="phone_number" class="form-label">Phone Number</label>
+      <input
+        type="text"
+        id="phone_number"
+        name="phone_number"
+        class="form-control"
+        value="{{ profile.phone_number }}"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="age" class="form-label">Age</label>
+      <input
+        type="number"
+        id="age"
+        name="age"
+        class="form-control"
+        value="{{ profile.age }}"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </form>
+</div>
+{% endblock %}

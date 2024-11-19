@@ -1,0 +1,51 @@
+<!-- admin only -->
+
+{% extends "movies/main.html" %} {% block content %}
+<div class="container mt-5">
+  <h2>Customer List</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>City</th>
+        <th>Phone Number</th>
+        <th>Age</th>
+        <th>Membership Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in customers %}
+      <tr>
+        <td>{{ customer.user.username }}</td>
+        <td>{{ customer.user.email }}</td>
+        <td>{{ customer.city }}</td>
+        <td>{{ customer.phone_number }}</td>
+        <td>{{ customer.age }}</td>
+        <td>
+          {% if customer.is_active %} Active {% else %} Inactive {% endif %}
+        </td>
+        <td>
+          <a
+            class="btn btn-sm btn-primary"
+            href="/customers/edit/{{ customer.id }}/"
+            >Edit</a
+          >
+          <form
+            action="/customers/toggle/{{ customer.id }}/"
+            method="post"
+            style="display: inline"
+          >
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-warning">
+              {% if customer.is_active %}Deactivate{% else %}Activate{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

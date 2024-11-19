@@ -1,0 +1,38 @@
+{% extends "movies/main.html" %} {% block content %}
+<div class="container mt-5">
+  <h2>All Loans</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Movie</th>
+        <th>Loan Date</th>
+        <th>Return Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for loan in loans %}
+      <tr>
+        <td>{{ loan.customer.username }}</td>
+        <td>{{ loan.movie.title }}</td>
+        <td>{{ loan.loan_date }}</td>
+        <td>{{ loan.return_date }}</td>
+        <td>{% if loan.is_active %} Active {% else %} Completed {% endif %}</td>
+        <td>
+          {% if loan.is_active %}
+          <form method="post" style="display: inline">
+            {% csrf_token %}
+            <input type="hidden" name="loan_id" value="{{ loan.id }}" />
+            <button type="submit" class="btn btn-sm btn-danger">
+              Complete Loan
+            </button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

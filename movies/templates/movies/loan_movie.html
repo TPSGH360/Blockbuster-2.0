@@ -1,0 +1,21 @@
+<!--after pressing loan... -->
+
+{% extends "movies/main.html" %} {% block content %}
+<div class="container mt-5">
+  <h2>Loan Movie: {{ movie.title }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="return_date" class="form-label">Return Date</label>
+      <input
+        type="date"
+        id="return_date"
+        name="return_date"
+        class="form-control"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Loan Movie</button>
+  </form>
+</div>
+{% endblock %}

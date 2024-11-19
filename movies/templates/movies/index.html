@@ -1,0 +1,71 @@
+<!-- movies page (main page by clicking the "BlockBuster 2.0 icon") -->
+
+{% extends "movies/main.html" %} {% block content %}
+<div class="container mt-5">
+  <h2>Movies Available for Loan</h2>
+
+  <!-- Search Bar -->
+  <form method="GET" action="" class="mb-4">
+    <div class="input-group">
+      <input
+        type="text"
+        name="q"
+        class="form-control"
+        placeholder="Search by title, director, or genre"
+        value="{{ request.GET.q }}"
+      />
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  </form>
+
+  <div class="row">
+    {% for movie in movies %}
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        {% if movie.photo %}
+        <img
+          src="{{ movie.photo.url }}"
+          class="card-img-top"
+          alt="{{ movie.title }}"
+        />
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.title }}</h5>
+          <p class="card-text">Director: {{ movie.director }}</p>
+          <p class="card-text">Year: {{ movie.year_released }}</p>
+          <p class="card-text">Genre: {{ movie.genre }}</p>
+          <p class="card-text">
+            Available: {% if movie.is_available %} Yes {% else %} No {% endif %}
+          </p>
+          {% if movie.is_available and user.is_authenticated and user.customer_profile.is_active %}
+                        <a href="{% url 'loan_movie' movie.id %}" class="btn btn-sm btn-success">Loan</a>
+                    {% else %}
+                        <button class="btn btn-sm btn-secondary" disabled>Unavailable</button>
+                    {% endif %}
+
+           {% if user.is_authenticated and user.is_staff %}
+          <div style="margin-top: 10px">
+            <a
+              href="{% url 'edit_movie' movie.id %}"
+              class="btn btn-sm btn-warning"
+              >Edit</a
+            >
+            <form
+              action="{% url 'delete_movie' movie.id %}"
+              method="post"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger">
+                Delete
+              </button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
